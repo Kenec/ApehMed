@@ -32,7 +32,8 @@ export default (sequelize, DataTypes) => {
           msg: 'role must not be empty'
         },
       },
-    }
+    },
+    token: DataTypes.STRING,
   }, {});
   Admins.associate = function(models) {
     // associations can be defined here
