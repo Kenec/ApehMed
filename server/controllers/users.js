@@ -11,7 +11,7 @@ export default {
    * @param {object} res - server response object
    * @return {json} - returns json format response
    */
-  Signup(req, res) {
+  signup(req, res) {
    const saltRounds = 10;
    const hash = bcrypt.hashSync(req.body.password, saltRounds);
    Users.create({
@@ -47,7 +47,7 @@ export default {
    * @param {object} res - server response object
    * @return {json} - returns json format response
    */
-  Signin(req, res) {
+  signin(req, res) {
 
    Users.findOne({
     where: {

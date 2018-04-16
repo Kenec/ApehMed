@@ -6,7 +6,7 @@ import { signupValidation, signinValidation, isAccountExits }
 const userController = controller.users;
 const userRoutes = express.Router();
 
-userRoutes.post('/signup', signupValidation, isAccountExits, userController.Signup);
-userRoutes.post('/signin', signinValidation, userController.Signin);
+userRoutes.post('/signup', signupValidation, isAccountExits, userController.signup);
+userRoutes.post('/signin', signinValidation, userController.signin);
 
 export default userRoutes;

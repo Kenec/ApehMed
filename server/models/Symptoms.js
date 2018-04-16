@@ -9,9 +9,6 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isAlpha: {
-          msg: 'Symptoms must be an valid string'
-        },
         notEmpty: {
           msg: 'Symptoms must not be empty'
         },
