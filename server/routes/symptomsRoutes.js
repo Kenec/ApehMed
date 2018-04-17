@@ -8,5 +8,8 @@ const symptomsRoutes = express.Router();
 
 symptomsRoutes.get('/', jwtAuth, symptomsController.getAllSymptoms);
 symptomsRoutes.post('/', jwtAuth, isAdminToken, validateSymptoms, symptomsController.postSymptoms);
+symptomsRoutes.put('/:id', jwtAuth, isAdminToken, validateSymptoms, symptomsController.updateSymptoms);
+symptomsRoutes.delete('/:id', jwtAuth, isAdminToken, validateSymptoms, symptomsController.deleteSymptoms);
+
 
 export default symptomsRoutes;

@@ -57,5 +57,105 @@ export default {
         message: 'Cannot post symptoms due to server errors'
       })
     });
+  },
+
+  /**
+   * updateSymptoms - protected controller for updating exiting symptoms by the admin
+   * @param {object} req - incoming syptoms object 
+   * @param {object} res - response
+   * @return {json} - return json format as a response
+   */
+  updateSymptoms(req, res) {
+    if(isNaN(req.params.id)) {
+      return res.status(400).send({
+        message: 'Invalid id'
+      });
+    }
+    Symptoms.findOne({
+      where: {
+        id: req.params.id
+      }
+    }).then((result) => {
+      if(result !== null) {
+        Symptoms.update({
+          symptoms: req.body.symptoms
+        }, {
+          where: {
+            id: req.params.id
+          }
+        }).then((update) => {
+          if (update) {
+            res.status(201).send({
+              message: 'Symptom updated'
+            });
+          } else {
+            res.status(501).send({
+              message: 'Unable to update symptoms'
+            });
+          }
+        }).catch(() => {
+          res.status(500).send({
+            message: 'Cannot update symptoms due to server error'
+          });
+        })
+      } else {
+        res.status(404).send({
+          message: 'No symptom with the id specified'
+        });
+      }
+    }).catch(() => {
+      res.status(500).send({
+        message: 'Cannot update symptoms'
+      });
+    })
+  },
+
+  /**
+   * deleteSymptoms - protected controller for deleting exiting symptoms by the admin
+   * @param {object} req - incoming syptoms object 
+   * @param {object} res - response
+   * @return {json} - return json format as a response
+   */
+  deleteSymptoms(req, res) {
+    if(isNaN(req.params.id)) {
+      return res.status(400).send({
+        message: 'Invalid id'
+      });
+    }
+    Symptoms.findOne({
+      where: {
+        id: req.params.id
+      }
+    }).then((result) => {
+      if(result !== null) {
+        Symptoms.destroy({
+          where: {
+            id: req.params.id
+          }
+        }).then((deleteSymptoms) => {
+          if (deleteSymptoms === 1) {
+            res.status(200).send({
+              message: 'Symptoms Removed!'
+            });
+          } else {
+            res.status(501).send({
+              message: 'Symptoms was unable to be deleted'
+            });
+          }
+        }).catch(() => {
+          res.status(500).send({
+            message: 'Cannot delete symptoms due to server error'
+          });
+        })
+      } else {
+        res.status(404).send({
+          message: 'No symptom with the id specified'
+        });
+      }
+    }).catch(() => {
+      res.status(500).send({
+        message: 'Cannot delete symptoms'
+      });
+    })
   }
 }
