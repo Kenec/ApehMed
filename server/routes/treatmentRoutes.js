@@ -1,15 +1,16 @@
 import express from 'express';
 import controller from '../controllers';
 import jwtAuth from '../shared/middlewares/jwtAuth';
-// import { isAdminToken, validateSymptoms } from '../shared/middlewares/validation';
+import { isAdminToken, validateTreatment, isIDNumber } from '../shared/middlewares/validation';
 
 const treatmentController = controller.treatments;
 const treatmentRoutes = express.Router();
 
 treatmentRoutes.get('/', jwtAuth, treatmentController.getTreatment);
-// sicknessRoutes.post('/', jwtAuth, isAdminToken, validateSymptoms, symptomsController.postSymptoms);
-// sicknessRoutes.put('/:id', jwtAuth, isAdminToken, validateSymptoms, symptomsController.updateSymptoms);
-// sicknessRoutes.delete('/:id', jwtAuth, isAdminToken, validateSymptoms, symptomsController.deleteSymptoms);
+treatmentRoutes.get('/:id', jwtAuth, isIDNumber, treatmentController.getOneTreatment);
+treatmentRoutes.post('/', jwtAuth, isAdminToken, validateTreatment, treatmentController.postTreatment);
+treatmentRoutes.put('/:id', jwtAuth, isAdminToken, validateTreatment, treatmentController.updateTreatment);
+treatmentRoutes.delete('/:id', jwtAuth, isAdminToken, validateTreatment, treatmentController.deleteTreatment);
 
 
 export default treatmentRoutes;

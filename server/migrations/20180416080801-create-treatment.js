@@ -14,10 +14,10 @@ module.exports = {
           notEmpty: true
         }
       },
-      sicknessId: {
+      SicknessesId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Sickness',
+          model: 'Sicknesses',
           key: 'id',
         },
       },
