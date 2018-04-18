@@ -14,10 +14,10 @@ export default (sequelize, DataTypes) => {
         },
       },
     },
-    sicknessId: DataTypes.INTEGER
+    SicknessesId: DataTypes.INTEGER
   }, {});
   Treatments.associate = function(models) {
-    Treatments.belongsTo(models.Sicknesses, { foreignKey: 'id', as: 'Sickness' });
+    Treatments.belongsTo(models.Sicknesses, { as: 'Sicknesses' });
   };
   return Treatments;
 };
