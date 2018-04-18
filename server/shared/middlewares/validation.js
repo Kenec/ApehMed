@@ -191,4 +191,29 @@ export function validateSymptoms(req, res, next) {
   next();
 }
 
+export function validateSickness(req, res, next) {
+  const errors = {};
+  
+  if ((!req.body.sickness) || (req.body.sickness.trim() == "")) {
+    errors.sickness = "sickness field is required";
+  }
+  
+  if (!isEmpty(errors)) {
+    return res.status(400).send({
+      error: errors
+    })
+  }
+ 
+  next();
+}
+
+export function isIDNumber(req, res, next) {
+  if(isNaN(req.params.id)) {
+    return res.status(400).send({
+      message: 'Invalid id'
+    });
+  }
+  next();
+}
+
 

@@ -1,5 +1,5 @@
 export default (sequelize, DataTypes) => {
-  const Sickness = sequelize.define('Sickness', {
+  const Sicknesses = sequelize.define('Sicknesses', {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -9,18 +9,18 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isAlpha: {
-          msg: 'sickness must be an valid string'
-        },
         notEmpty: {
           msg: 'sickness must not be empty'
         },
       },
     },
-    symptoms: DataTypes.STRING
+    symptoms: DataTypes.STRING,
+    description: DataTypes.STRING,
+    contracting: DataTypes.STRING,
+    causes: DataTypes.STRING
   }, {});
-  Sickness.associate = function(models) {
-    // associations can be defined here
+  Sicknesses.associate = function(models) {
+    
   };
-  return Sickness;
+  return Sicknesses;
 };
