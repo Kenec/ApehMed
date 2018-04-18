@@ -93,7 +93,6 @@ export default {
       }
     }).catch((error) => {
       res.status(500).send({
-        error,
         message: 'Cannot post treatment due to server errors'
       })
     });
