@@ -17,7 +17,7 @@ export default (sequelize, DataTypes) => {
     sicknessId: DataTypes.INTEGER
   }, {});
   Treatments.associate = function(models) {
-    Treatments.belongsTo(models.Sickness, { as: 'Sickness' });
+    Treatments.belongsTo(models.Sicknesses, { foreignKey: 'id', as: 'Sickness' });
   };
   return Treatments;
 };

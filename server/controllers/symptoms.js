@@ -66,11 +66,6 @@ export default {
    * @return {json} - return json format as a response
    */
   updateSymptoms(req, res) {
-    if(isNaN(req.params.id)) {
-      return res.status(400).send({
-        message: 'Invalid id'
-      });
-    }
     Symptoms.findOne({
       where: {
         id: req.params.id
@@ -117,11 +112,6 @@ export default {
    * @return {json} - return json format as a response
    */
   deleteSymptoms(req, res) {
-    if(isNaN(req.params.id)) {
-      return res.status(400).send({
-        message: 'Invalid id'
-      });
-    }
     Symptoms.findOne({
       where: {
         id: req.params.id
