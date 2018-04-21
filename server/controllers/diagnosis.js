@@ -1,6 +1,35 @@
 import { Symptoms, Sicknesses } from '../models';
 require('dotenv').config();
 
+/**
+ * compareSymptoms - Logic for diagnosis of sickness
+ * @param {array} sicknessSymptoms 
+ * @param {string} comparingSymptoms
+ * @return {string} - returns the string of the diagnosis
+ */
+function compareSymptoms(sicknessSymptoms, comparingSymptoms) {
+  let degreeOfMatch = {}
+  let patientsSymtoms = comparingSymptoms.split(',');
+  
+  let sickness = '';
+  let symptoms = '';
+  Object.keys(sicknessSymptoms).forEach((key) => {
+      symptoms = sicknessSymptoms[key].split(',');
+      sickness = key;
+      
+      let occurance = 0
+      symptoms.map((mySymptoms) => {
+        if(patientsSymtoms.includes(mySymptoms)) {
+          occurance++
+        }
+      });
+      
+      degreeOfMatch[sickness] = occurance;
+      
+  });
+  // return degreeOfMatch;
+  return Object.keys(degreeOfMatch).reduce((a, b) => degreeOfMatch[a] > degreeOfMatch[b] ? a : b);
+}
 export default {
   /**
    * diagnosis - creates a diagnosis of sickness based on symptoms
@@ -9,17 +38,21 @@ export default {
    * @return {json} - returns json format response
    */
   diagnosePatient(req, res) {
-    let patienceSymptoms = req.body.symptoms;
-    // patienceSymptoms = patienceSymptoms.split(',');
+    let patientSymptoms = req.body.symptoms;
+    let sicknessSymptoms = {};
+    let diagnosedSickness = '';
     
-    Sicknesses.findAll({
-      where: {
-        symptoms: req.body.symptoms
+    Sicknesses.findAll().then((result) => {
+      if(result.length !== 0) {
+        result.map((diagnose) => {
+          sicknessSymptoms[diagnose.sickness] = diagnose.symptoms;
+        });
+        // console.log(compareSymptoms(sicknessSymptoms, patientSymptoms));
+        diagnosedSickness = compareSymptoms(sicknessSymptoms, patientSymptoms)
       }
-    }).then((result) => {
       res.status(200).send({
-        result
-      })
+        diagnosedSickness
+      });
     }).catch(() => {
       res.status(500).send({
         message: 'Cannot diagnose you at the moment due to server error'
