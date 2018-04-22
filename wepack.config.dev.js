@@ -1,12 +1,16 @@
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
   mode: "development",
-  entry: path.join(__dirname, '/client/js/Client.jsx'), 
+  entry: [
+    'webpack-hot-middleware/client',
+    path.join(__dirname, '/client/js/Client.jsx')
+  ], 
   output: {
     path: path.resolve('./client/dist'),
     filename: 'bundle.min.js',
-    publicPath: '/dist/'
+    publicPath: '/'
   },
   module: {
     rules: [
@@ -18,12 +22,24 @@ module.exports = {
         exclude: [
           path.resolve(__dirname, "node_modules")
         ],
-        enforce: "pre",
         loader: "babel-loader",
         options: {
           presets: ["es2015"]
         },
-      }
+      },
+      {
+        test: /\.(jpg|png|svg|jpeg)$/,
+        use: {
+          loader: 'file-loader',
+          options: {
+            name: './images/[hash].[ext]',
+          },
+        },
+      },
+      {
+        test: /(\.s?css)$/,
+        loader: ['style-loader', 'css-loader']
+      },
     ],
   },
   resolve: {
@@ -36,6 +52,8 @@ module.exports = {
   devtool: "source-map",
   context: __dirname,
   plugins: [
-    // ...
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoEmitOnErrorsPlugin()
   ],
 }
