@@ -12,11 +12,11 @@ router.get('/', (req, res) => {
   res.send("Welcome to Apehmed STD Expert System");
 });
 
-router.use('/api/v1/users/', userRoutes);
-router.use('/api/v1/admins/', adminRoutes); 
-router.use('/api/v1/symptoms/', symptomsRoutes);
-router.use('/api/v1/sickness/', sicknessRoutes); 
-router.use('/api/v1/treatments/', treatmentRoutes);
-router.use('/api/v1/diagnosis/', diagnosisRoutes);
+router.use('/v1/users/', userRoutes);
+router.use('/v1/admins/', adminRoutes); 
+router.use('/v1/symptoms/', symptomsRoutes);
+router.use('/v1/sickness/', sicknessRoutes); 
+router.use('/v1/treatments/', treatmentRoutes);
+router.use('/v1/diagnosis/', diagnosisRoutes);
 
 export default router;
