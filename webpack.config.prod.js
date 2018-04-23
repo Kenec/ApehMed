@@ -1,15 +1,16 @@
-const path = require('path');
-const webpack = require('webpack');
+import path from 'path';
+import webpack from 'webpack';
+import dotenv from 'dotenv';
+import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
+
+dotenv.config();
 
 module.exports = {
-  mode: "development",
-  entry: [
-    'webpack-hot-middleware/client',
-    path.join(__dirname, '/client/js/Client.jsx')
-  ], 
+  mode: "production",
+  entry: path.resolve(__dirname, 'client/js/Client.jsx'), 
   output: {
-    path: path.resolve('./client/dist'),
-    filename: 'bundle.min.js',
+    path: path.resolve('./client/dist/'),
+    filename: 'bundle.js',
     publicPath: '/'
   },
   module: {
@@ -52,8 +53,16 @@ module.exports = {
   devtool: "source-map",
   context: __dirname,
   plugins: [
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin()
+    new UglifyJsPlugin({
+      sourceMap: true
+    }),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('production')
+      }
+    }),
+    new webpack.EnvironmentPlugin([
+      'REQUEST', 'CLOUD_PRESET', 'JWT_SECRET'
+    ])
   ],
 }

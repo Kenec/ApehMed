@@ -26,6 +26,7 @@
     "sass-loader": "^7.0.1",
     "sequelize": "^4.37.6",
     "style-loader": "^0.21.0",
+    "uglifyjs-webpack-plugin": "^1.2.5",
     "validator": "^9.4.1"
   },
   "devDependencies": {
@@ -43,7 +44,8 @@
     "start": "babel-node server/index.js",
     "start:dev": "nodemon --watch server --exec babel-node server/index.js --ignore client",
     "migrate": "sequelize db:migrate",
-    "migrate:undo": "sequelize db:migrate:undo:all"
+    "migrate:undo": "sequelize db:migrate:undo:all",
+    "transpile": "babel client -d dist"
   },
   "repository": {
     "type": "git",
