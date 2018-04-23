@@ -2,22 +2,38 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import path from 'path';
 import webpack from 'webpack';
-import webpackMiddleware from 'webpack-dev-middleware';
+import webpackDevMiddleware from 'webpack-dev-middleware';
+import webpackHotMiddleware from 'webpack-hot-middleware';
 
 import routes from './routes';
-import webpackConfig from '../wepack.config.dev.js';
+const config = process.env.NODE_ENV !== 'production' ?
+require('../wepack.config.dev.js') : '';
 
 const app = express();
-
-app.use(webpackMiddleware(webpack(webpackConfig)));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/api', routes);
 
-app.get('/', (req, res) => {
-  res.sendFile(path.resolve('./client/index.html'));
-});
+if (process.env.NODE_ENV !== 'production') {
+  const compiler = webpack(config);
+
+  app.use(webpackDevMiddleware(compiler, {
+    noInfo: true,
+    publicPath: config.output.publicPath
+  }));
+
+  app.use(webpackHotMiddleware(compiler));
+
+  app.get('/', (req, res) => {
+    res.sendFile(path.resolve('./client/index.html'));
+  });
+} else {
+  app.get('/', (req, res) => {
+    res.sendFile(path.resolve('./client/index.html'));
+  });
+}
+
 
 app.listen(process.env.PORT || 3000);
 
