@@ -10,7 +10,7 @@ module.exports = {
   output: {
     path: path.resolve('./client/dist'),
     filename: 'bundle.min.js',
-    publicPath: '/dist/'
+    publicPath: '/'
   },
   module: {
     rules: [
