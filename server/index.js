@@ -29,10 +29,9 @@ app.use(webpackDevMiddleware(compiler, {
   publicPath: devConfig.output.publicPath
 }));
 
-app.get('/', (req, res) => {
+app.get('*', (req, res) => {
   res.sendFile(path.resolve('./client/index.html'));
 });
-
 
 app.listen(process.env.PORT || 3000);
 
