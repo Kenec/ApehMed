@@ -1,0 +1,65 @@
+.change-color {
+  background-color: #068498;
+}
+
+html {
+/*   height: 100vh; */
+}
+
+body {
+/*   min-height: 100vh; */
+}
+
+.body-display {
+  position: relative;
+  z-index: 1;
+}
+
+.body-image-transparent {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  background: url('http://ineedtheocean.com/lib/036/837-nature.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  opacity: 0.3;
+  filter: alpha(opacity=30);
+}
+
+.app-head {
+  font-size: 40px;
+  font-family: verdana;
+  font-weight: bold;
+  color: #07444E;
+}
+
+.app-description {
+  color: #7E4200;
+  font-weight: bold;
+  font-size: 25px;
+}
+
+.bold-white {
+  font-size: 22px;
+  color: white;
+  font-weight: bold;
+}
+
+.btn-custom {
+  background: #07444E;
+  color: white;
+  width: 300px;
+  height: 50px;
+}
+
+.nice_p {
+  color: black;
+  font-weight: bold;
+  font-size: 18px;
+}
