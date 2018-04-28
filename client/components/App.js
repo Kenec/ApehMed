@@ -4,6 +4,7 @@ import createBrowserHistory from 'history/createBrowserHistory';
 import LandingPage from '../components/LandingPage';
 import DiagnosisPage from '../components/DiagnosisPage';
 import DiagnosisResultPage from '../components/DiagnosisResultPage';
+import requireAuth from '../utils/requireAuth';
 
 const history = createBrowserHistory();
 
