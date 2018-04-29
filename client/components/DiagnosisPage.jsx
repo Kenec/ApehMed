@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { push } from 'react-router-redux'
 import UserNavigation from './headers/UserNavigation';
+import { getSymptoms } from '../actions/symptomsActions';
 
 class DiagnosisPage extends Component {
   constructor(props) {
@@ -10,6 +11,18 @@ class DiagnosisPage extends Component {
 
     this.onSubmit = this.onSubmit.bind(this);
   }
+
+   /**
+   * Life cycle method to be called before a component mounts
+   * @method componentWillMount
+   * @return {void} void
+   */
+    componentWillMount() {
+      this.props.getSymptoms()
+    }
+
+    componentDidMount() {
+    }
 
   /**
    * Handles onSubmit event
@@ -24,6 +37,22 @@ class DiagnosisPage extends Component {
 
 
   render() {
+    const { symptoms } = this.props.symptoms;
+    let sicknessSymptoms = '';
+
+    if (!symptoms) {
+      return <h4>Loading....</h4>;
+    }
+
+    sicknessSymptoms = symptoms.map((symptomObj) => {
+      return (
+        <div key={symptomObj.id} className="row mt-3">
+          <input type="checkbox" className="form-check-input" id={symptomObj.id} />
+          <b><label className="form-check-label" htmlFor="exampleCheck1">{symptomObj.symptoms}</label></b>
+        </div>
+      );
+    })
+    
     return (
       <div>
         <UserNavigation />
@@ -31,68 +60,41 @@ class DiagnosisPage extends Component {
         <div className="container-fluid body-image-transparent"></div>
           <div className="row">
             <div className="col-10 mt-5 ml-5">
-              <h4 className="app-head">
-                Symptoms <hr/>
-              </h4>
-                <div className="row app-description">
-                  <div className="htmlForm-check htmlForm-check-inline">
-                    <input className="htmlForm-check-input" type="checkbox" id="inlineCheckbox1" value="option1" />
-                    <label className="htmlForm-check-label" htmlFor="inlineCheckbox1">Crabs</label>
-                  </div>
-                  <div className="htmlForm-check htmlForm-check-inline">
-                    <input className="htmlForm-check-input" type="checkbox" id="inlineCheckbox2" value="option2" />
-                    <label className="htmlForm-check-label" htmlFor="inlineCheckbox2">Itching</label>
-                  </div>
-                  <div className="htmlForm-check htmlForm-check-inline">
-                    <input className="htmlForm-check-input" type="checkbox" id="inlineCheckbox3" value="option3" />
-                    <label className="htmlForm-check-label" htmlFor="inlineCheckbox3">Red Spots</label>
-                  </div>
-                  <div className="htmlForm-check htmlForm-check-inline">
-                    <input className="htmlForm-check-input" type="checkbox" id="inlineCheckbox1" value="option1" />
-                    <label className="htmlForm-check-label" htmlFor="inlineCheckbox1">Blue Spots</label>
-                  </div>
-                  <div className="htmlForm-check htmlForm-check-inline">
-                    <input className="htmlForm-check-input" type="checkbox" id="inlineCheckbox2" value="option2" />
-                    <label className="htmlForm-check-label" htmlFor="inlineCheckbox2">Blood in the Urine</label>
-                  </div>
-                  <div className="htmlForm-check htmlForm-check-inline">
-                    <input className="htmlForm-check-input" type="checkbox" id="inlineCheckbox3" value="option3" />
-                    <label className="htmlForm-check-label" htmlFor="inlineCheckbox3">Red Spots</label>
+              <nav>
+                <div className="nav nav-tabs" id="nav-tab" role="tablist">
+                  <a className="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">
+                  <h4 className="transparent"> Diagnosis </h4></a>
+                  <a className="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">
+                  <h4 className="transparent"> Treatment </h4></a>
+                </div>
+              </nav>
+              <div className="tab-content" id="nav-tabContent">
+                <div className="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+
+                <div className="row">
+                  <div className="col-10 mt-3">
+                    <form onSubmit={this.onSubmit}>
+                    <div className="mb-5 ml-5">
+                      {sicknessSymptoms && sicknessSymptoms}
+                    </div>
+                    <button  type="submit" className="btn btn-custom btn-lg">Diagnose</button>
+                    </form>
                   </div>
                 </div>
-                <div className="row app-description">
-                  <div className="htmlForm-check htmlForm-check-inline">
-                    <input className="htmlForm-check-input" type="checkbox" id="inlineCheckbox1" value="option1" />
-                    <label className="htmlForm-check-label" htmlFor="inlineCheckbox1">Burning sensation during urination</label>
-                  </div>
-                  <div className="htmlForm-check htmlForm-check-inline">
-                    <input className="htmlForm-check-input" type="checkbox" id="inlineCheckbox2" value="option2" />
-                    <label className="htmlForm-check-label" htmlFor="inlineCheckbox2">Fever</label>
-                  </div>
-                  <div className="htmlForm-check htmlForm-check-inline">
-                    <input className="htmlForm-check-input" type="checkbox" id="inlineCheckbox3" value="option3" />
-                    <label className="htmlForm-check-label" htmlFor="inlineCheckbox3">yellow or green discharge from the penis</label>
-                  </div>
-                  <div className="htmlForm-check htmlForm-check-inline">
-                    <input className="htmlForm-check-input" type="checkbox" id="inlineCheckbox1" value="option1" />
-                    <label className="htmlForm-check-label" htmlFor="inlineCheckbox1">pain in the lower abdomen</label>
-                  </div>
-                  <div className="htmlForm-check htmlForm-check-inline">
-                    <input className="htmlForm-check-input" type="checkbox" id="inlineCheckbox2" value="option2" />
-                    <label className="htmlForm-check-label" htmlFor="inlineCheckbox2">pain in the testicles</label>
-                  </div>
-                  <div className="htmlForm-check htmlForm-check-inline">
-                    <input className="htmlForm-check-input" type="checkbox" id="inlineCheckbox3" value="option3" />
-                    <label className="htmlForm-check-label" htmlFor="inlineCheckbox3">Red inflamed eye</label>
+                </div>
+                <div className="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                  <div className="col-12 mt-3">
+                    <form onSubmit={this.onSubmit}>
+                      <div className="input-group mb-3">
+                        <input type="text" className="form-control" placeholder="Enter your Lab diagnosed sickness" />
+                        <div className="input-group-append">
+                          <button className="btn btn-outline-primary" type="button">Get Treatments</button>
+                        </div>
+                      </div>
+                    </form>
                   </div>
                 </div>
               </div>
-          </div>
-          <div className="row">
-            <div className="col-10 mt-5 ml-5">
-              <form onSubmit={this.onSubmit}>
-                <button  type="submit" className="btn btn-custom btn-lg">Diagnose</button>
-              </form>
             </div>
           </div>
       </div>
@@ -103,11 +105,12 @@ class DiagnosisPage extends Component {
 
 const mapStateToProps = state => {
   return {
-
+    symptoms: state.symptoms
   }
 }
 
 const mapDispatchToProps = {
+  getSymptoms
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DiagnosisPage);

@@ -16,8 +16,8 @@ class App extends Component {
         <div>
           <Switch>
             <Route exact path="/" component={LandingPage} />
-            <Route exact path="/diagnose/dashboard" component={DiagnosisPage} />
-            <Route exact path="/diagnose/result" component={DiagnosisResultPage} />
+            <Route exact path="/diagnose/dashboard" component={requireAuth(DiagnosisPage)} />
+            <Route exact path="/diagnose/result" component={requireAuth(DiagnosisResultPage)} />
           </Switch>
         </div>
       </Router>

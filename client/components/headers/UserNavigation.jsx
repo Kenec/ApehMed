@@ -21,19 +21,6 @@ class UserNavigation extends Component {
   }
 
   /**
-   * Life cycle method to be called before a component mounts
-   * @method componentWillMount
-   * @return {void} void
-   */
-  componentWillMount() {
-    const { user } = this.props.auth;
-    this.props.setCurrentUser({
-      email: jwt.decode(localStorage.jwtToken).email,
-      id: jwt.decode(localStorage.jwtToken).id  
-    })
-  }
-
-  /**
    * Handles onSubmit event
    * @method onSubmit
    * @param {object} event
@@ -66,6 +53,7 @@ class UserNavigation extends Component {
     );
   }
 }
+
 UserNavigation.contextTypes = {
   router: PropTypes.objectOf(any).isRequired
 };
