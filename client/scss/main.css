@@ -76,3 +76,9 @@ body {
   border-top-left-radius: 10px;
   border-bottom-color: rgb(1, 8, 19);
 }
+
+.scroll {
+  height: 330px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
