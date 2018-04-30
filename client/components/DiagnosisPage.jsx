@@ -38,19 +38,15 @@ class DiagnosisPage extends Component {
 
   render() {
     const { symptoms } = this.props.symptoms;
-    let sicknessSymptoms = '';
 
     if (!symptoms) {
       return <h4>Loading....</h4>;
     }
 
-    sicknessSymptoms = symptoms.map((symptomObj) => {
-      return (
-        <div key={symptomObj.id} className="row mt-3">
-          <input type="checkbox" className="form-check-input" id={symptomObj.id} />
-          <b><label className="form-check-label" htmlFor="exampleCheck1">{symptomObj.symptoms}</label></b>
-        </div>
-      );
+    const sicknessSymptoms = symptoms.map(symptomObj => {
+       return (
+        <span><input type="checkbox" id={symptomObj.id} /> <b> {symptomObj.symptoms} </b> <br /></span>
+       )
     })
     
     return (
@@ -72,13 +68,18 @@ class DiagnosisPage extends Component {
                 <div className="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
 
                 <div className="row">
-                  <div className="col-10 mt-3">
-                    <form onSubmit={this.onSubmit}>
-                    <div className="mb-5 ml-5">
-                      {sicknessSymptoms && sicknessSymptoms}
+                  <div className="col-8 mt-3">
+                      <div className="row ml-1 text-dark"><b>SYMPTOMS</b></div><hr/>
+                      <div className="scroll"> {sicknessSymptoms} </div>
+                      <form onSubmit={this.onSubmit}>
+                        <button  type="submit" className="btn btn-custom btn-lg">Diagnose</button>
+                      </form>
+                  </div>
+                  <div className="col-4 mt-3">
+                    <div className="form-group">
+                      <label htmlFor="diagnosis_result"><b>DIAGNOSIS RESULT</b></label>
+                      <textarea className="form-control" id="diagnosis_result" rows="12" readOnly="readOnly"></textarea>
                     </div>
-                    <button  type="submit" className="btn btn-custom btn-lg">Diagnose</button>
-                    </form>
                   </div>
                 </div>
                 </div>
