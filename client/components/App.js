@@ -3,7 +3,7 @@ import { Router,Switch, Route } from 'react-router-dom'
 import createBrowserHistory from 'history/createBrowserHistory';
 import LandingPage from '../components/LandingPage';
 import DiagnosisPage from '../components/DiagnosisPage';
-import DiagnosisResultPage from '../components/DiagnosisResultPage';
+import NotFound from '../components/NotFound';
 import requireAuth from '../utils/requireAuth';
 
 const history = createBrowserHistory();
@@ -17,7 +17,7 @@ class App extends Component {
           <Switch>
             <Route exact path="/" component={LandingPage} />
             <Route exact path="/diagnose/dashboard" component={requireAuth(DiagnosisPage)} />
-            <Route exact path="/diagnose/result" component={requireAuth(DiagnosisResultPage)} />
+            <Route component={NotFound} />
           </Switch>
         </div>
       </Router>
