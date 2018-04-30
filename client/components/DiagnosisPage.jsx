@@ -4,12 +4,19 @@ import { Link } from 'react-router';
 import { push } from 'react-router-redux'
 import UserNavigation from './headers/UserNavigation';
 import { getSymptoms } from '../actions/symptomsActions';
+import { diagnose } from '../actions/diagnosisActions';
 
 class DiagnosisPage extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      error: '',
+      diagnosis: '',
+      symptoms: []
+    };
 
     this.onSubmit = this.onSubmit.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
 
    /**
@@ -32,12 +39,39 @@ class DiagnosisPage extends Component {
    */
   onSubmit(event) {
     event.preventDefault();
-    this.props.history.push('/diagnose/result');
+    this.setState({ error: '', diagnosis: '' });
+
+    if (!this.state.symptoms.length > 0) {
+      this.setState({ error: 'Please select at least one symptoms! '})
+    } else {
+      this.props.diagnose(this.state.symptoms.toString())
+    }
   }
+
+  /**
+   * Handles onCheck event
+   * @method onCheck
+   * @param {object} event
+   * @return {void}
+   */
+  onChange(event) {
+    if (event.target.checked && !this.state.symptoms.includes(event.target.id)) {
+      // add to the array
+      this.state.symptoms.push(event.target.id);
+    } else if (!event.target.checked && this.state.symptoms.includes(event.target.id)) {
+      // remove from the array
+      let itemIndex = this.state.symptoms.indexOf(event.target.id);
+      if(itemIndex != -1) {
+        this.state.symptoms.splice(itemIndex, 1);
+      }
+    }
+  }
+  
 
 
   render() {
     const { symptoms } = this.props.symptoms;
+    const { diagnosis } = this.props.diagnosis;
 
     if (!symptoms) {
       return <h4>Loading....</h4>;
@@ -45,7 +79,7 @@ class DiagnosisPage extends Component {
 
     const sicknessSymptoms = symptoms.map(symptomObj => {
        return (
-        <span><input type="checkbox" id={symptomObj.id} /> <b> {symptomObj.symptoms} </b> <br /></span>
+        <span key={symptomObj.id}><input onChange={this.onChange} type="checkbox" id={symptomObj.id} /> <b> {symptomObj.symptoms} </b> <br /></span>
        )
     })
     
@@ -69,8 +103,8 @@ class DiagnosisPage extends Component {
 
                 <div className="row">
                   <div className="col-8 mt-3">
-                      <div className="row ml-1 text-dark"><b>SYMPTOMS</b></div><hr/>
-                      <div className="scroll"> {sicknessSymptoms} </div>
+                      <div className="row ml-1 text-dark"><b>SYMPTOMS</b> <span className="ml-5 text-danger">{this.state.error}</span></div><hr/>
+                      <div className="scroll mb-3"> {sicknessSymptoms} </div>
                       <form onSubmit={this.onSubmit}>
                         <button  type="submit" className="btn btn-custom btn-lg">Diagnose</button>
                       </form>
@@ -78,7 +112,7 @@ class DiagnosisPage extends Component {
                   <div className="col-4 mt-3">
                     <div className="form-group">
                       <label htmlFor="diagnosis_result"><b>DIAGNOSIS RESULT</b></label>
-                      <textarea className="form-control" id="diagnosis_result" rows="12" readOnly="readOnly"></textarea>
+                      <textarea onChange={this.onChange} value={diagnosis} className="form-control" id="diagnosis_result" rows="12" readOnly="readOnly"></textarea>
                     </div>
                   </div>
                 </div>
@@ -106,12 +140,14 @@ class DiagnosisPage extends Component {
 
 const mapStateToProps = state => {
   return {
-    symptoms: state.symptoms
+    symptoms: state.symptoms,
+    diagnosis: state.diagnose
   }
 }
 
 const mapDispatchToProps = {
-  getSymptoms
+  getSymptoms,
+  diagnose
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DiagnosisPage);
