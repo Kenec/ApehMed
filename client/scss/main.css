@@ -82,3 +82,7 @@ body {
   overflow-y: scroll;
   overflow-x: hidden;
 }
+
+.bg-white {
+  background-color: white;
+}

@@ -95,7 +95,7 @@ class DiagnosisPage extends Component {
                   <a className="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">
                   <h4 className="transparent"> Diagnosis </h4></a>
                   <a className="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">
-                  <h4 className="transparent"> Treatment </h4></a>
+                  <h4 className="transparent"> LAB result </h4></a>
                 </div>
               </nav>
               <div className="tab-content" id="nav-tabContent">
@@ -111,23 +111,44 @@ class DiagnosisPage extends Component {
                   </div>
                   <div className="col-4 mt-3">
                     <div className="form-group">
-                      <label htmlFor="diagnosis_result"><b>DIAGNOSIS RESULT</b></label>
+                      <label htmlFor="diagnosis_result"><b>Suspected sickness</b></label>
                       <textarea onChange={this.onChange} value={diagnosis} className="form-control" id="diagnosis_result" rows="12" readOnly="readOnly"></textarea>
                     </div>
                   </div>
                 </div>
                 </div>
                 <div className="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                  <div className="col-12 mt-3">
-                    <form onSubmit={this.onSubmit}>
-                      <div className="input-group mb-3">
-                        <input type="text" className="form-control" placeholder="Enter your Lab diagnosed sickness" />
-                        <div className="input-group-append">
-                          <button className="btn btn-outline-primary" type="button">Get Treatments</button>
-                        </div>
-                      </div>
-                    </form>
+                  <div className="col-12 mt-3 bg-white">
+                    <table className="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">Sickness</th>
+                          <th scope="col">+ve (Detected)</th>
+                          <th scope="col">-ve (Not Detected)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Chlamydia trachomatis</td>
+                          <td><input type="checkbox" /></td>
+                          <td><input type="checkbox" /></td>
+                        </tr>
+                        <tr>
+                          <td>Gonococcus</td>
+                          <td><input type="checkbox" /></td>
+                          <td><input type="checkbox" /></td>
+                        </tr>
+                        <tr>
+                          <td>Trichomonas Vaginalis</td>
+                          <td><input type="checkbox" /></td>
+                          <td><input type="checkbox" /></td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
+                  <form onSubmit={this.onSubmit}>
+                    <button  type="submit" className="btn btn-custom btn-lg">Get Treatment</button>
+                  </form>
                 </div>
               </div>
             </div>
