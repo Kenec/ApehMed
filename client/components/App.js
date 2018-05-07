@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Router,Switch, Route } from 'react-router-dom'
 import createBrowserHistory from 'history/createBrowserHistory';
 import LandingPage from '../components/LandingPage';
+import SignupPage from '../components/SignupPage';
 import DiagnosisPage from '../components/DiagnosisPage';
 import NotFound from '../components/NotFound';
 import requireAuth from '../utils/requireAuth';
@@ -16,6 +17,7 @@ class App extends Component {
         <div>
           <Switch>
             <Route exact path="/" component={LandingPage} />
+            <Route exact path="/signup" component={SignupPage} />
             <Route exact path="/diagnose/dashboard" component={requireAuth(DiagnosisPage)} />
             <Route component={NotFound} />
           </Switch>

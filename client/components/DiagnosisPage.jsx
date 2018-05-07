@@ -5,6 +5,7 @@ import { push } from 'react-router-redux'
 import UserNavigation from './headers/UserNavigation';
 import { getSymptoms } from '../actions/symptomsActions';
 import { diagnose } from '../actions/diagnosisActions';
+import { getSickness } from '../actions/sicknessActions';
 
 class DiagnosisPage extends Component {
   constructor(props) {
@@ -25,7 +26,8 @@ class DiagnosisPage extends Component {
    * @return {void} void
    */
     componentWillMount() {
-      this.props.getSymptoms()
+      this.props.getSymptoms();
+      this.props.getSickness();
     }
 
     componentDidMount() {
@@ -72,7 +74,8 @@ class DiagnosisPage extends Component {
   render() {
     const { symptoms } = this.props.symptoms;
     const { diagnosis } = this.props.diagnosis;
-
+    const { sickness } = this.props.sickness;
+    
     if (!symptoms) {
       return <h4>Loading....</h4>;
     }
@@ -83,6 +86,32 @@ class DiagnosisPage extends Component {
        )
     })
     
+    let listDiagnosed; 
+    if(diagnosis) {
+      listDiagnosed = diagnosis.map(res => {
+        if(res[1] > 0) {
+          return (
+            <span key={res[0]}><br />
+            <b>{res[0]}</b>
+            </span>
+          )
+        }
+      })
+    }
+
+    let listSickness;
+    if(sickness) {
+      listSickness = sickness.map(eachSickness => {
+        return (
+          <tr key={eachSickness.id}>
+            <td>{eachSickness.sickness}</td>
+            <td><input type="radio" id={eachSickness.id} name={eachSickness.sickness} value="positive"/></td>
+            <td><input type="radio" id={eachSickness.id} name={eachSickness.sickness} value="negative"/></td>
+          </tr>
+        )
+      }) 
+    }
+
     return (
       <div>
         <UserNavigation />
@@ -95,7 +124,7 @@ class DiagnosisPage extends Component {
                   <a className="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">
                   <h4 className="transparent"> Diagnosis </h4></a>
                   <a className="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">
-                  <h4 className="transparent"> Treatment </h4></a>
+                  <h4 className="transparent"> LAB result </h4></a>
                 </div>
               </nav>
               <div className="tab-content" id="nav-tabContent">
@@ -110,24 +139,37 @@ class DiagnosisPage extends Component {
                       </form>
                   </div>
                   <div className="col-4 mt-3">
-                    <div className="form-group">
-                      <label htmlFor="diagnosis_result"><b>DIAGNOSIS RESULT</b></label>
-                      <textarea onChange={this.onChange} value={diagnosis} className="form-control" id="diagnosis_result" rows="12" readOnly="readOnly"></textarea>
+                    <div className="col-12">
+                      <span><b>Suspected sickness</b></span>
+                      <div className="col-12 bg-white scroll mt-2">
+                        <br/>
+                        {listDiagnosed && 'Your symptoms suggest you might be infected with: '}
+                        {listDiagnosed && listDiagnosed}
+                        <br/>
+                        {listDiagnosed && 'Go for a NAA Test'}
+                      </div>
                     </div>
                   </div>
                 </div>
                 </div>
                 <div className="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                  <div className="col-12 mt-3">
-                    <form onSubmit={this.onSubmit}>
-                      <div className="input-group mb-3">
-                        <input type="text" className="form-control" placeholder="Enter your Lab diagnosed sickness" />
-                        <div className="input-group-append">
-                          <button className="btn btn-outline-primary" type="button">Get Treatments</button>
-                        </div>
-                      </div>
-                    </form>
+                  <div className="col-12 mt-3 bg-white">
+                    <table className="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">Sickness</th>
+                          <th scope="col">+ve (Detected)</th>
+                          <th scope="col">-ve (Not Detected)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {listSickness && listSickness}
+                      </tbody>
+                    </table>
                   </div>
+                  <form onSubmit={this.onSubmit}>
+                    <button  type="submit" className="btn btn-custom btn-lg">Get Treatment</button>
+                  </form>
                 </div>
               </div>
             </div>
@@ -141,12 +183,14 @@ class DiagnosisPage extends Component {
 const mapStateToProps = state => {
   return {
     symptoms: state.symptoms,
-    diagnosis: state.diagnose
+    diagnosis: state.diagnose,
+    sickness: state.sickness
   }
 }
 
 const mapDispatchToProps = {
   getSymptoms,
+  getSickness,
   diagnose
 }
 
