@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import NavigationHeader from './headers/NavigationHeader';
 
 class LandingPage extends Component {
@@ -26,7 +27,9 @@ class LandingPage extends Component {
           </div>
           <div className="row">
             <div className="col-10 mt-5 ml-5">
-              <button type="button" className="btn btn-custom btn-lg">Signup</button>
+              <Link to="/signup">
+                <button type="button" className="btn btn-custom btn-lg">Signup</button>
+              </Link>
             </div>
           </div>
       </div>
