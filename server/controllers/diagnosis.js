@@ -27,8 +27,16 @@ function compareSymptoms(sicknessSymptoms, comparingSymptoms) {
       degreeOfMatch[sickness] = occurance;
       
   });
-  // return degreeOfMatch;
-  return Object.keys(degreeOfMatch).reduce((a, b) => degreeOfMatch[a] > degreeOfMatch[b] ? a : b);
+  let sortable = [];
+  for (let sick in degreeOfMatch) {
+    sortable.push([sick, degreeOfMatch[sick]]);
+  }
+  sortable.sort(function(a, b) {
+    return a[1] - b[1];
+  });
+  // console.log(sortable.reverse());
+  // return Object.keys(degreeOfMatch).reduce((a, b) => degreeOfMatch[a] > degreeOfMatch[b] ? a : b);
+  return sortable.reverse()
 }
 export default {
   /**
@@ -40,14 +48,14 @@ export default {
   diagnosePatient(req, res) {
     let patientSymptoms = req.body.symptoms;
     let sicknessSymptoms = {};
-    let diagnosedSickness = '';
+    let diagnosedSickness = [];
     
-    Sicknesses.findAll().then((result) => {
+    Sicknesses.findAll()
+    .then((result) => {
       if(result.length !== 0) {
         result.map((diagnose) => {
           sicknessSymptoms[diagnose.sickness] = diagnose.symptoms;
         });
-        // console.log(compareSymptoms(sicknessSymptoms, patientSymptoms));
         diagnosedSickness = compareSymptoms(sicknessSymptoms, patientSymptoms)
       }
       res.status(200).send({

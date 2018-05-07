@@ -5,6 +5,7 @@ import { push } from 'react-router-redux'
 import UserNavigation from './headers/UserNavigation';
 import { getSymptoms } from '../actions/symptomsActions';
 import { diagnose } from '../actions/diagnosisActions';
+import { getSickness } from '../actions/sicknessActions';
 
 class DiagnosisPage extends Component {
   constructor(props) {
@@ -25,7 +26,8 @@ class DiagnosisPage extends Component {
    * @return {void} void
    */
     componentWillMount() {
-      this.props.getSymptoms()
+      this.props.getSymptoms();
+      this.props.getSickness();
     }
 
     componentDidMount() {
@@ -72,7 +74,8 @@ class DiagnosisPage extends Component {
   render() {
     const { symptoms } = this.props.symptoms;
     const { diagnosis } = this.props.diagnosis;
-
+    const { sickness } = this.props.sickness;
+    
     if (!symptoms) {
       return <h4>Loading....</h4>;
     }
@@ -83,6 +86,32 @@ class DiagnosisPage extends Component {
        )
     })
     
+    let listDiagnosed; 
+    if(diagnosis) {
+      listDiagnosed = diagnosis.map(res => {
+        if(res[1] > 0) {
+          return (
+            <span key={res[0]}><br />
+            <b>{res[0]}</b>
+            </span>
+          )
+        }
+      })
+    }
+
+    let listSickness;
+    if(sickness) {
+      listSickness = sickness.map(eachSickness => {
+        return (
+          <tr key={eachSickness.id}>
+            <td>{eachSickness.sickness}</td>
+            <td><input type="radio" id={eachSickness.id} name={eachSickness.sickness} value="positive"/></td>
+            <td><input type="radio" id={eachSickness.id} name={eachSickness.sickness} value="negative"/></td>
+          </tr>
+        )
+      }) 
+    }
+
     return (
       <div>
         <UserNavigation />
@@ -110,9 +139,15 @@ class DiagnosisPage extends Component {
                       </form>
                   </div>
                   <div className="col-4 mt-3">
-                    <div className="form-group">
-                      <label htmlFor="diagnosis_result"><b>Suspected sickness</b></label>
-                      <textarea onChange={this.onChange} value={diagnosis} className="form-control" id="diagnosis_result" rows="12" readOnly="readOnly"></textarea>
+                    <div className="col-12">
+                      <span><b>Suspected sickness</b></span>
+                      <div className="col-12 bg-white scroll mt-2">
+                        <br/>
+                        {listDiagnosed && 'Your symptoms suggest you might be infected with: '}
+                        {listDiagnosed && listDiagnosed}
+                        <br/>
+                        {listDiagnosed && 'Go for a NAA Test'}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -128,21 +163,7 @@ class DiagnosisPage extends Component {
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>Chlamydia trachomatis</td>
-                          <td><input type="checkbox" /></td>
-                          <td><input type="checkbox" /></td>
-                        </tr>
-                        <tr>
-                          <td>Gonococcus</td>
-                          <td><input type="checkbox" /></td>
-                          <td><input type="checkbox" /></td>
-                        </tr>
-                        <tr>
-                          <td>Trichomonas Vaginalis</td>
-                          <td><input type="checkbox" /></td>
-                          <td><input type="checkbox" /></td>
-                        </tr>
+                        {listSickness && listSickness}
                       </tbody>
                     </table>
                   </div>
@@ -162,12 +183,14 @@ class DiagnosisPage extends Component {
 const mapStateToProps = state => {
   return {
     symptoms: state.symptoms,
-    diagnosis: state.diagnose
+    diagnosis: state.diagnose,
+    sickness: state.sickness
   }
 }
 
 const mapDispatchToProps = {
   getSymptoms,
+  getSickness,
   diagnose
 }
 
