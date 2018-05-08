@@ -77,7 +77,9 @@ class SignupPage extends Component {
                       <input type="email" className="form-control" id="repassword" placeholder="Confirm password" required/>
                     </div>
                 </div>
-                <button type="submit" className="btn btn-custom btn-lg ">Signup</button>
+                <div className="row ml-3">
+                  <button type="submit" className="btn btn-custom btn-lg ">Signup</button>
+                </div>
               </form>
             </div>
           </div>
